@@ -20,11 +20,11 @@ const CustomerOrder = () => {
   const fetchData = async () => {
     try {
       // 1. Fetch Device Info
-      const deviceRes = await axios.get(`http://localhost:5000/api/public/device/${deviceId}`);
+      const deviceRes = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/public/device/${deviceId}`);
       setDevice(deviceRes.data);
 
       // 2. Fetch Menu
-      const menuRes = await axios.get(`http://localhost:5000/api/public/menu/${loungeId}`);
+      const menuRes = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/public/menu/${loungeId}`);
       setProducts(menuRes.data);
     } catch (error) {
       toast.error('Failed to load menu. Please try again later.');
@@ -72,7 +72,7 @@ const CustomerOrder = () => {
         deviceId,
         items: cart.map(item => ({ productId: item._id, quantity: item.quantity }))
       };
-      await axios.post('http://localhost:5000/api/public/order', payload);
+      await axios.post(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/public/order`, payload);
       setOrderSuccess(true);
       setCart([]);
     } catch (error) {

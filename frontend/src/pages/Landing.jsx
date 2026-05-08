@@ -81,7 +81,7 @@ const Landing = () => {
     setIsStatusModalOpen(true);
     setIsLoadingStatus(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/lounges/${loungeId}/status`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/lounges/${loungeId}/status`);
       setStatusData(res.data);
     } catch (error) {
       console.error(error);
@@ -97,7 +97,7 @@ const Landing = () => {
 
     setIsLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/lounges/search?query=${query}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/lounges/search?query=${query}`);
       setResults(res.data);
       setHasSearched(true);
     } catch (error) {

@@ -17,7 +17,7 @@ const ShiftGuard = ({ children }) => {
 
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const res = await axios.get('http://localhost:5000/api/shifts/active', config);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/shifts/active`, config);
       if (res.data) {
         const shift = res.data;
         if (user.role === 'STAFF' && shift.staffId?._id !== user._id) {
@@ -43,7 +43,7 @@ const ShiftGuard = ({ children }) => {
     if (user.role !== 'OWNER') {
       fetchActiveShift();
 
-      const socket = io('http://localhost:5000');
+      const socket = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'));
       socket.on('connect', () => {
         socket.emit('joinLounge', user.loungeId);
       });
@@ -59,7 +59,7 @@ const ShiftGuard = ({ children }) => {
     setIsLoading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post('http://localhost:5000/api/shifts/start', { startingCash: 0 }, config);
+      await axios.post(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/shifts/start`, { startingCash: 0 }, config);
       toast.success('Shift started successfully!');
       fetchActiveShift();
     } catch (error) {
@@ -72,7 +72,7 @@ const ShiftGuard = ({ children }) => {
     setIsLoading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post('http://localhost:5000/api/shifts/end', {}, config);
+      await axios.post(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/shifts/end`, {}, config);
       toast.success('Shift ended successfully!');
       setActiveShift(null);
       setShowEndModal(false);

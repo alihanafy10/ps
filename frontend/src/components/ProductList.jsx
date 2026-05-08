@@ -20,7 +20,7 @@ const ProductList = ({ isAdmin }) => {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/products', {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/products`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setProducts(data);
@@ -48,7 +48,7 @@ const ProductList = ({ isAdmin }) => {
     setIsSubmitting(true);
     try {
       const { data } = await axios.post(
-        'http://localhost:5000/api/products',
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/products`,
         formData,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -66,7 +66,7 @@ const ProductList = ({ isAdmin }) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
     
     try {
-      await axios.delete(`http://localhost:5000/api/products/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/products/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setProducts(products.filter((p) => p._id !== id));
@@ -93,7 +93,7 @@ const ProductList = ({ isAdmin }) => {
   const handleUpdate = async (id) => {
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/products/${id}`,
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/products/${id}`,
         editFormData,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );

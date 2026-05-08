@@ -25,7 +25,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
     setIsLoading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const res = await axios.put('http://localhost:5000/api/auth/profile', { name, email }, config);
+      const res = await axios.put(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/auth/profile`, { name, email }, config);
       toast.success('Profile updated successfully!');
       
       // Update local context
@@ -50,7 +50,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
     setIsLoading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.put('http://localhost:5000/api/auth/password', { password }, config);
+      await axios.put(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/auth/password`, { password }, config);
       toast.success('Password updated successfully!');
       setPassword('');
       setConfirmPassword('');

@@ -25,7 +25,7 @@ const DirectSaleModal = ({ isOpen, onClose, onSaleComplete }) => {
     setIsLoading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const res = await axios.get('http://localhost:5000/api/products', config);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/products`, config);
       setProducts(res.data);
     } catch (error) {
       toast.error('Failed to load products');
@@ -78,7 +78,7 @@ const DirectSaleModal = ({ isOpen, onClose, onSaleComplete }) => {
         }))
       };
 
-      const res = await axios.post('http://localhost:5000/api/orders', orderData, config);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/orders`, orderData, config);
       toast.success('Sale completed successfully!');
       if (onSaleComplete) onSaleComplete();
       

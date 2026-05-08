@@ -20,7 +20,7 @@ const ShiftAuditModal = ({ isOpen, onClose, shiftId }) => {
     setIsLoading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const res = await axios.get(`http://localhost:5000/api/reports/shift-details/${shiftId}`, config);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/reports/shift-details/${shiftId}`, config);
       setData(res.data);
     } catch (error) {
       toast.error('Failed to fetch shift details');

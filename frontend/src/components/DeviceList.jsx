@@ -532,7 +532,7 @@ const DeviceList = ({ isAdmin }) => {
 
   useEffect(() => {
     // Connect Socket.io
-    const socket = io('http://localhost:5000');
+    const socket = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'));
     
     socket.on('connect', () => {
       socket.emit('joinLounge', user.loungeId);
@@ -560,9 +560,9 @@ const DeviceList = ({ isAdmin }) => {
     const fetchData = async () => {
       try {
         const [devicesRes, sessionsRes, productsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/devices', { headers: { Authorization: `Bearer ${user.token}` } }),
-          axios.get('http://localhost:5000/api/sessions/active', { headers: { Authorization: `Bearer ${user.token}` } }),
-          axios.get('http://localhost:5000/api/products', { headers: { Authorization: `Bearer ${user.token}` } })
+          axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/devices`, { headers: { Authorization: `Bearer ${user.token}` } }),
+          axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/sessions/active`, { headers: { Authorization: `Bearer ${user.token}` } }),
+          axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/products`, { headers: { Authorization: `Bearer ${user.token}` } })
         ]);
         setDevices(devicesRes.data);
         setActiveSessions(sessionsRes.data);
@@ -590,7 +590,7 @@ const DeviceList = ({ isAdmin }) => {
     setIsSubmitting(true);
     try {
       const { data } = await axios.post(
-        'http://localhost:5000/api/devices',
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/devices`,
         formData,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -607,7 +607,7 @@ const DeviceList = ({ isAdmin }) => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this device?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/devices/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/devices/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setDevices(devices.filter((d) => d._id !== id));
@@ -620,7 +620,7 @@ const DeviceList = ({ isAdmin }) => {
   const handleUpdate = async (id, editData) => {
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/devices/${id}`,
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/devices/${id}`,
         editData,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -634,7 +634,7 @@ const DeviceList = ({ isAdmin }) => {
   const handleStartSession = async (deviceId, type, isLimit, limitMinutes) => {
     try {
       await axios.post(
-        'http://localhost:5000/api/sessions/start',
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/sessions/start`,
         { deviceId, type, isLimit, limitMinutes },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -646,7 +646,7 @@ const DeviceList = ({ isAdmin }) => {
   const handleConvertToOpenSession = async (sessionId) => {
     try {
       await axios.post(
-        'http://localhost:5000/api/sessions/convert-to-open',
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/sessions/convert-to-open`,
         { sessionId },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -659,7 +659,7 @@ const DeviceList = ({ isAdmin }) => {
   const handleSwitchModeSession = async (sessionId) => {
     try {
       await axios.patch(
-        `http://localhost:5000/api/sessions/switch/${sessionId}`,
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/sessions/switch/${sessionId}`,
         {},
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -672,7 +672,7 @@ const DeviceList = ({ isAdmin }) => {
   const handleAddOrder = async (sessionId, productId, quantity) => {
     try {
       await axios.post(
-        'http://localhost:5000/api/sessions/order',
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/sessions/order`,
         { sessionId, productId, quantity },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -685,12 +685,12 @@ const DeviceList = ({ isAdmin }) => {
   const handleStopSession = async (deviceId) => {
     try {
       await axios.post(
-        'http://localhost:5000/api/sessions/stop',
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/sessions/stop`,
         { deviceId },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
       // Update local product stock since checkout deducts it
-      const productsRes = await axios.get('http://localhost:5000/api/products', { headers: { Authorization: `Bearer ${user.token}` } });
+      const productsRes = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/products`, { headers: { Authorization: `Bearer ${user.token}` } });
       setProducts(productsRes.data);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to stop session');

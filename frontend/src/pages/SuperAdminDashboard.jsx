@@ -17,7 +17,7 @@ const SuperAdminDashboard = () => {
 
   const fetchLounges = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admin/lounges', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/admin/lounges`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       setLounges(res.data);
@@ -31,7 +31,7 @@ const SuperAdminDashboard = () => {
   const handleExtend = async (userId, days) => {
     try {
       await axios.post(
-        'http://localhost:5000/api/admin/extend-subscription',
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/admin/extend-subscription`,
         { userId, daysToAdd: days },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );

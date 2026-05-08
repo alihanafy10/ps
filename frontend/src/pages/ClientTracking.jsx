@@ -21,13 +21,13 @@ const ClientTracking = () => {
   useEffect(() => {
     const fetchSessionData = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/sessions/public/device/${deviceId}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/sessions/public/device/${deviceId}`);
         setData(res.data);
         setIsLoading(false);
 
         // If there's an active session, connect to its lounge's socket room
         if (res.data.active) {
-          const socket = io('http://localhost:5000');
+          const socket = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'));
           socket.on('connect', () => {
             socket.emit('joinLounge', res.data.loungeId);
           });

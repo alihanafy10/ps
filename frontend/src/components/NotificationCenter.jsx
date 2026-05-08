@@ -21,7 +21,7 @@ const NotificationCenter = () => {
     fetchPendingOrders();
 
     // Socket Setup
-    socketRef.current = io('http://localhost:5000');
+    socketRef.current = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'));
     
     if (user?.loungeId) {
       socketRef.current.emit('joinLounge', user.loungeId);
@@ -53,7 +53,7 @@ const NotificationCenter = () => {
   const fetchPendingOrders = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const res = await axios.get('http://localhost:5000/api/orders/pending', config);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/orders/pending`, config);
       setPendingOrders(res.data);
     } catch (error) {
       console.error('Failed to fetch pending orders', error);
@@ -64,7 +64,7 @@ const NotificationCenter = () => {
     setProcessingId(orderId);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.patch(`http://localhost:5000/api/orders/pending/${orderId}/confirm`, {}, config);
+      await axios.patch(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/orders/pending/${orderId}/confirm`, {}, config);
       toast.success('Order confirmed and added to session!');
       setPendingOrders((prev) => prev.filter(o => o._id !== orderId));
       if (pendingOrders.length === 1) setIsOpen(false);
@@ -79,7 +79,7 @@ const NotificationCenter = () => {
     setProcessingId(orderId);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.patch(`http://localhost:5000/api/orders/pending/${orderId}/cancel`, {}, config);
+      await axios.patch(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/orders/pending/${orderId}/cancel`, {}, config);
       toast.success('Order cancelled.');
       setPendingOrders((prev) => prev.filter(o => o._id !== orderId));
       if (pendingOrders.length === 1) setIsOpen(false);

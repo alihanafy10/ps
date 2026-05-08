@@ -28,7 +28,7 @@ const StaffManagement = () => {
   const fetchStaff = async () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const res = await axios.get('http://localhost:5000/api/staff', config);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/staff`, config);
       setStaffList(res.data);
     } catch (error) {
       toast.error('Failed to load staff');
@@ -63,10 +63,10 @@ const StaffManagement = () => {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
 
       if (modalMode === 'add') {
-        await axios.post('http://localhost:5000/api/staff', formData, config);
+        await axios.post(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/staff`, formData, config);
         toast.success('Staff added successfully!');
       } else {
-        await axios.put(`http://localhost:5000/api/staff/${currentStaff._id}`, formData, config);
+        await axios.put(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/staff/${currentStaff._id}`, formData, config);
         toast.success('Staff updated successfully!');
       }
 
@@ -84,7 +84,7 @@ const StaffManagement = () => {
 
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.delete(`http://localhost:5000/api/staff/${id}`, config);
+      await axios.delete(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/staff/${id}`, config);
       toast.success('Staff deleted successfully!');
       setStaffList(staffList.filter(s => s._id !== id));
     } catch (error) {

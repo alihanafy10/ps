@@ -24,8 +24,8 @@ const FinancialReports = () => {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         
         const [summaryRes, shiftsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/reports/owner-summary', config),
-          axios.get('http://localhost:5000/api/reports/shifts-log', config)
+          axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/reports/owner-summary`, config),
+          axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/reports/shifts-log`, config)
         ]);
 
         setSummary(summaryRes.data);
