@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gaming-dark: #0f172a;
+  --color-gaming-darker: #020617;
+  --color-gaming-card: #1e293b;
+  --color-gaming-neon: #8b5cf6;
+  --color-gaming-accent: #06b6d4;
+}
+
+@layer base {
+  body {
+    @apply bg-gaming-darker text-gray-100 antialiased;
+  }
+}
+
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #020617; 
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155; 
+}
+
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  body * {
+    visibility: hidden;
+  }
+  .receipt-print, .receipt-print * {
+    visibility: visible;
+  }
+  .receipt-print {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 80mm !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    background: white !important;
+    color: black !important;
+    font-family: monospace !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
