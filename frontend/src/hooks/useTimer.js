@@ -1,43 +1,67 @@
 import { useState, useEffect } from 'react';
 
-export const useTimer = (startTime, isLimit = false, limitMinutes = 0) => {
+export const useTimer = (session) => {
   const [elapsed, setElapsed] = useState(0);
   const [remaining, setRemaining] = useState(0);
   const [isTimeUp, setIsTimeUp] = useState(false);
 
   useEffect(() => {
-    if (!startTime) {
+    if (!session || !session.startTime) {
       setElapsed(0);
       setRemaining(0);
       setIsTimeUp(false);
       return;
     }
 
-    const start = new Date(startTime).getTime();
+    const { isLimit, limitMinutes, modeHistory, status } = session;
     const limitMs = limitMinutes * 60 * 1000;
-    const end = start + limitMs;
-    
+
+    const calculateElapsedSeconds = () => {
+      let totalMs = 0;
+      
+      if (modeHistory && modeHistory.length > 0) {
+        modeHistory.forEach(mode => {
+          const start = new Date(mode.startTime).getTime();
+          const end = mode.endTime ? new Date(mode.endTime).getTime() : Date.now();
+          totalMs += (end - start);
+        });
+      } else {
+        // Fallback for legacy sessions without modeHistory
+        const start = new Date(session.startTime).getTime();
+        const end = status === 'Paused' || status === 'Finished' ? new Date(session.updatedAt).getTime() : Date.now();
+        totalMs = end - start;
+      }
+
+      return Math.floor(totalMs / 1000);
+    };
+
     const updateTime = () => {
-      const now = Date.now();
-      setElapsed(Math.floor((now - start) / 1000));
+      const currentElapsedSeconds = calculateElapsedSeconds();
+      setElapsed(currentElapsedSeconds);
       
       if (isLimit) {
-        const diff = end - now;
-        if (diff <= 0) {
+        const remainingSeconds = (limitMs / 1000) - currentElapsedSeconds;
+        if (remainingSeconds <= 0) {
           setRemaining(0);
           setIsTimeUp(true);
         } else {
-          setRemaining(Math.floor(diff / 1000));
+          setRemaining(Math.floor(remainingSeconds));
           setIsTimeUp(false);
         }
       }
     };
 
     updateTime();
-    const interval = setInterval(updateTime, 1000);
+    
+    let interval;
+    if (status === 'Active') {
+      interval = setInterval(updateTime, 1000);
+    }
 
-    return () => clearInterval(interval);
-  }, [startTime, isLimit, limitMinutes]);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [session]);
 
   const formatTime = (totalSeconds) => {
     const hours = Math.floor(totalSeconds / 3600);
@@ -52,7 +76,7 @@ export const useTimer = (startTime, isLimit = false, limitMinutes = 0) => {
   };
 
   return {
-    timeString: formatTime(isLimit ? Math.max(0, remaining) : elapsed),
-    isTimeUp: isLimit && isTimeUp
+    timeString: formatTime(session?.isLimit ? Math.max(0, remaining) : elapsed),
+    isTimeUp: session?.isLimit && isTimeUp
   };
 };

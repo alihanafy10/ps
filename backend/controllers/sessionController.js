@@ -322,7 +322,7 @@ const getActiveSessions = async (req, res) => {
   try {
     const sessions = await Session.find({
       loungeId: req.user.loungeId,
-      status: 'Active',
+      status: { $in: ['Active', 'Paused'] },
     }).populate('deviceId', 'name type priceSingle priceMulti');
 
     res.status(200).json(sessions);
@@ -338,7 +338,7 @@ const getPublicSessionByDevice = async (req, res) => {
   try {
     const session = await Session.findOne({
       deviceId: req.params.deviceId,
-      status: 'Active',
+      status: { $in: ['Active', 'Paused'] },
     })
       .select('startTime type isLimit limitMinutes modeHistory orders loungeId deviceId')
       .populate('loungeId', 'name')
@@ -380,6 +380,87 @@ const getPublicSessionByDevice = async (req, res) => {
   }
 };
 
+// @desc    Pause an active session
+// @route   POST /api/sessions/pause
+// @access  Private (OWNER & STAFF)
+const pauseSession = async (req, res) => {
+  const { sessionId } = req.body;
+
+  try {
+    const session = await Session.findOne({
+      _id: sessionId,
+      status: 'Active',
+      loungeId: req.user.loungeId,
+    }).populate('deviceId', 'name type priceSingle priceMulti');
+
+    if (!session) {
+      return res.status(404).json({ message: 'Active session not found' });
+    }
+
+    session.status = 'Paused';
+
+    // End the current mode history segment
+    if (session.modeHistory && session.modeHistory.length > 0) {
+      session.modeHistory[session.modeHistory.length - 1].endTime = Date.now();
+    } else {
+      session.modeHistory = [{
+        type: session.type,
+        startTime: session.startTime,
+        endTime: Date.now()
+      }];
+    }
+
+    await session.save();
+
+    const io = getIo(req);
+    if (io) {
+      io.to(req.user.loungeId.toString()).emit('sessionUpdated', session);
+    }
+
+    res.status(200).json(session);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error pausing session' });
+  }
+};
+
+// @desc    Resume a paused session
+// @route   POST /api/sessions/resume
+// @access  Private (OWNER & STAFF)
+const resumeSession = async (req, res) => {
+  const { sessionId } = req.body;
+
+  try {
+    const session = await Session.findOne({
+      _id: sessionId,
+      status: 'Paused',
+      loungeId: req.user.loungeId,
+    }).populate('deviceId', 'name type priceSingle priceMulti');
+
+    if (!session) {
+      return res.status(404).json({ message: 'Paused session not found' });
+    }
+
+    session.status = 'Active';
+
+    // Start a new mode history segment
+    session.modeHistory.push({
+      type: session.type,
+      startTime: Date.now()
+    });
+
+    await session.save();
+
+    const io = getIo(req);
+    if (io) {
+      io.to(req.user.loungeId.toString()).emit('sessionUpdated', session);
+    }
+
+    res.status(200).json(session);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error resuming session' });
+  }
+};
+
 module.exports = {
   startSession,
   addOrderToSession,
@@ -388,4 +469,6 @@ module.exports = {
   switchSessionMode,
   getActiveSessions,
   getPublicSessionByDevice,
+  pauseSession,
+  resumeSession,
 };

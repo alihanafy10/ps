@@ -3,7 +3,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { io } from 'socket.io-client';
 import { AuthContext } from '../context/AuthContext';
-import { Loader2, Monitor, Plus, Minus, Trash2, Edit2, X, Check, Play, Timer, ShoppingCart, Coffee, Receipt } from 'lucide-react';
+import { Loader2, Monitor, Plus, Minus, Trash2, Edit2, X, Check, Play, Timer, ShoppingCart, Coffee, Receipt, Pause, PlayCircle } from 'lucide-react';
 import { useTimer } from '../hooks/useTimer';
 
 import { QRCodeSVG } from 'qrcode.react';
@@ -220,7 +220,7 @@ const CheckoutModal = ({ isOpen, onClose, session, device, onConfirm }) => {
 };
 
 
-const DeviceCard = ({ device, isAdmin, activeSession, products, onStart, onStop, onDelete, onUpdate, onAddOrder, onConvertToOpen, onSwitchMode }) => {
+const DeviceCard = ({ device, isAdmin, activeSession, products, onStart, onStop, onDelete, onUpdate, onAddOrder, onConvertToOpen, onSwitchMode, onPause, onResume }) => {
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({ ...device });
   const [sessionType, setSessionType] = useState('Single');
@@ -233,11 +233,7 @@ const DeviceCard = ({ device, isAdmin, activeSession, products, onStart, onStop,
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [hasBeeped, setHasBeeped] = useState(false);
   
-  const { timeString, isTimeUp } = useTimer(
-    activeSession?.startTime, 
-    activeSession?.isLimit, 
-    activeSession?.limitMinutes
-  );
+  const { timeString, isTimeUp } = useTimer(activeSession);
 
   // Play beep when time is up
   useEffect(() => {
@@ -386,13 +382,13 @@ const DeviceCard = ({ device, isAdmin, activeSession, products, onStart, onStop,
         </div>
 
         <div className="p-6 flex flex-col items-center justify-center flex-grow">
-          <div className={`text-5xl font-mono tracking-wider font-bold mb-2 ${isActive ? (isTimeUp ? 'text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]' : 'text-red-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]') : 'text-gray-600'}`}>
+          <div className={`text-5xl font-mono tracking-wider font-bold mb-2 ${isActive ? (activeSession.status === 'Paused' ? 'text-gray-500 animate-pulse' : isTimeUp ? 'text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]' : 'text-red-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]') : 'text-gray-600'}`}>
             {isActive ? timeString : '00:00:00'}
           </div>
           {isActive ? (
             <div className="flex flex-col items-center gap-2">
               <div className="text-red-300/80 text-sm flex items-center gap-1 font-medium bg-red-950/50 px-3 py-1 rounded-full border border-red-500/20">
-                <Timer className="w-4 h-4" /> {activeSession.type} {activeSession.isLimit ? `(Limit: ${activeSession.limitMinutes}m)` : 'Playing'}
+                <Timer className="w-4 h-4" /> {activeSession.type} {activeSession.isLimit ? `(Limit: ${activeSession.limitMinutes}m)` : 'Playing'} {activeSession.status === 'Paused' && ' (PAUSED)'}
               </div>
               
               <div className="flex gap-2 mt-2">
@@ -433,9 +429,16 @@ const DeviceCard = ({ device, isAdmin, activeSession, products, onStart, onStop,
                 <Plus className="w-6 h-6" />
               </button>
               <button
+                onClick={activeSession.status === 'Paused' ? () => onResume(activeSession._id) : () => onPause(activeSession._id)}
+                disabled={isProcessing}
+                className={`flex-1 py-3 font-bold rounded-lg transition-all flex justify-center items-center gap-2 disabled:opacity-70 ${activeSession.status === 'Paused' ? 'bg-green-500 hover:bg-green-600 text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'bg-yellow-500 hover:bg-yellow-600 text-black shadow-[0_0_15px_rgba(234,179,8,0.4)]'}`}
+              >
+                {activeSession.status === 'Paused' ? <PlayCircle className="w-5 h-5" /> : <Pause className="w-5 h-5" />}
+              </button>
+              <button
                 onClick={() => setIsCheckoutModalOpen(true)}
                 disabled={isProcessing}
-                className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg shadow-[0_0_15px_rgba(239,68,68,0.4)] transition-all flex justify-center items-center gap-2 disabled:opacity-70"
+                className="flex-[2] py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg shadow-[0_0_15px_rgba(239,68,68,0.4)] transition-all flex justify-center items-center gap-2 disabled:opacity-70"
               >
                 {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Receipt className="w-5 h-5" />}
                 CHECKOUT
@@ -697,6 +700,32 @@ const DeviceList = ({ isAdmin }) => {
     }
   };
 
+  const handlePauseSession = async (sessionId) => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/sessions/pause`,
+        { sessionId },
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      toast.success('Session paused');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to pause session');
+    }
+  };
+
+  const handleResumeSession = async (sessionId) => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/sessions/resume`,
+        { sessionId },
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      toast.success('Session resumed');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to resume session');
+    }
+  };
+
   return (
     <div className="space-y-8">
       {isAdmin && (
@@ -786,6 +815,8 @@ const DeviceList = ({ isAdmin }) => {
                   onAddOrder={handleAddOrder}
                   onConvertToOpen={handleConvertToOpenSession}
                   onSwitchMode={handleSwitchModeSession}
+                  onPause={handlePauseSession}
+                  onResume={handleResumeSession}
                 />
               );
             })}

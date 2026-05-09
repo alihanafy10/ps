@@ -106,10 +106,13 @@ const NotificationCenter = () => {
 
       {isOpen && (
         <div className="fixed top-24 left-4 right-4 sm:absolute sm:top-auto sm:left-auto sm:right-0 sm:mt-4 w-auto sm:w-80 max-w-sm mx-auto bg-gaming-card border border-gray-800 rounded-2xl shadow-2xl z-[100] overflow-hidden">
-          <div className="p-4 border-b border-gray-800 bg-gaming-dark">
+          <div className="p-4 border-b border-gray-800 bg-gaming-dark flex justify-between items-center">
             <h3 className="text-white font-bold flex items-center gap-2">
               <Bell className="w-4 h-4 text-gaming-accent" /> Pending Orders
             </h3>
+            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white transition-colors bg-gray-800 hover:bg-gray-700 p-1 rounded-full">
+              <XCircle className="w-5 h-5" />
+            </button>
           </div>
           
           <div className="max-h-96 overflow-y-auto p-2">

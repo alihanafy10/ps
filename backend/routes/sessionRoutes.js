@@ -8,12 +8,16 @@ const {
   switchSessionMode,
   getActiveSessions,
   getPublicSessionByDevice,
+  pauseSession,
+  resumeSession,
 } = require('../controllers/sessionController');
 const { protect, checkSubscription } = require('../middleware/authMiddleware');
 
 router.post('/start', protect, checkSubscription, startSession);
 router.post('/order', protect, checkSubscription, addOrderToSession);
 router.post('/stop', protect, checkSubscription, stopSession);
+router.post('/pause', protect, checkSubscription, pauseSession);
+router.post('/resume', protect, checkSubscription, resumeSession);
 router.post('/convert-to-open', protect, checkSubscription, convertSessionToOpen);
 router.patch('/switch/:sessionId', protect, checkSubscription, switchSessionMode);
 router.get('/active', protect, checkSubscription, getActiveSessions);

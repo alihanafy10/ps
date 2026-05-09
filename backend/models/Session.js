@@ -57,7 +57,7 @@ const sessionSchema = new mongoose.Schema(
     ],
     status: {
       type: String,
-      enum: ['Active', 'Finished'],
+      enum: ['Active', 'Paused', 'Finished'],
       default: 'Active',
     },
     orders: [
