@@ -23,8 +23,9 @@ const NotificationCenter = () => {
     // Socket Setup
     socketRef.current = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'), {
       path: "/socket.io/",
-      transports: ["websocket", "polling"],
+      transports: ["websocket"],
       secure: true,
+      upgrade: false
     });
     
     if (user?.loungeId) {
