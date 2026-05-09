@@ -28,6 +28,7 @@ const ClientTracking = () => {
         // If there's an active session, connect to its lounge's socket room
         if (res.data.active) {
           const socket = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'), {
+            path: "/socket.io/",
             transports: ["websocket"],
             secure: true,
           });
