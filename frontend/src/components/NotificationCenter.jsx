@@ -105,7 +105,7 @@ const NotificationCenter = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 sm:right-0 mt-4 w-[calc(100vw-2rem)] sm:w-80 max-w-sm bg-gaming-card border border-gray-800 rounded-2xl shadow-2xl z-50 overflow-hidden">
+        <div className="fixed top-24 left-4 right-4 sm:absolute sm:top-auto sm:left-auto sm:right-0 sm:mt-4 w-auto sm:w-80 max-w-sm mx-auto bg-gaming-card border border-gray-800 rounded-2xl shadow-2xl z-[100] overflow-hidden">
           <div className="p-4 border-b border-gray-800 bg-gaming-dark">
             <h3 className="text-white font-bold flex items-center gap-2">
               <Bell className="w-4 h-4 text-gaming-accent" /> Pending Orders
