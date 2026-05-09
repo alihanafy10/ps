@@ -535,7 +535,10 @@ const DeviceList = ({ isAdmin }) => {
 
   useEffect(() => {
     // Connect Socket.io
-    const socket = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'));
+    const socket = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'), {
+      transports: ["websocket"],
+      secure: true,
+    });
     
     socket.on('connect', () => {
       socket.emit('joinLounge', user.loungeId);
@@ -580,6 +583,7 @@ const DeviceList = ({ isAdmin }) => {
     fetchData();
 
     return () => {
+      socket.off();
       socket.disconnect();
     };
   }, [user]);

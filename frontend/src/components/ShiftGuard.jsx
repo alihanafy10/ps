@@ -43,7 +43,10 @@ const ShiftGuard = ({ children }) => {
     if (user.role !== 'OWNER') {
       fetchActiveShift();
 
-      const socket = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'));
+      const socket = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'), {
+        transports: ["websocket"],
+        secure: true,
+      });
       socket.on('connect', () => {
         socket.emit('joinLounge', user.loungeId);
       });
@@ -51,7 +54,10 @@ const ShiftGuard = ({ children }) => {
       socket.on('sessionStopped', fetchActiveShift);
       socket.on('orderCreated', fetchActiveShift);
 
-      return () => socket.disconnect();
+      return () => {
+        socket.off();
+        socket.disconnect();
+      };
     }
   }, [user]);
 

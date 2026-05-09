@@ -21,7 +21,10 @@ const NotificationCenter = () => {
     fetchPendingOrders();
 
     // Socket Setup
-    socketRef.current = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'));
+    socketRef.current = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'), {
+      transports: ["websocket"],
+      secure: true,
+    });
     
     if (user?.loungeId) {
       socketRef.current.emit('joinLounge', user.loungeId);
@@ -46,7 +49,10 @@ const NotificationCenter = () => {
     });
 
     return () => {
-      socketRef.current.disconnect();
+      if (socketRef.current) {
+        socketRef.current.off();
+        socketRef.current.disconnect();
+      }
     };
   }, [user]);
 
