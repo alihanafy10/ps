@@ -37,14 +37,14 @@ const OrderModal = ({ isOpen, onClose, products, onAddOrder, session }) => {
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="bg-gaming-card border border-gaming-neon rounded-2xl w-full max-w-lg shadow-[0_0_30px_rgba(139,92,246,0.3)] flex flex-col max-h-[80vh]">
-        <div className="p-6 border-b border-gray-800 flex justify-between items-center">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+      <div className="bg-gaming-card border border-gaming-neon rounded-2xl w-full max-w-lg shadow-[0_0_30px_rgba(139,92,246,0.3)] flex flex-col max-h-[90vh] sm:max-h-[80vh]">
+        <div className="p-4 sm:p-6 border-b border-gray-800 flex justify-between items-center">
+          <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
             <Coffee className="text-gaming-neon" /> Add to Order
           </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-white"><X /></button>
+          <button onClick={onClose} className="text-gray-400 hover:text-white p-1"><X className="w-5 h-5 sm:w-6 sm:h-6" /></button>
         </div>
-        <div className="p-6 overflow-y-auto flex-grow space-y-4">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-grow space-y-4">
           {products.length === 0 ? (
             <p className="text-gray-400 text-center">No products available in inventory.</p>
           ) : (
@@ -153,12 +153,12 @@ const CheckoutModal = ({ isOpen, onClose, session, device, onConfirm }) => {
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="receipt-print bg-gaming-card border border-red-500 rounded-2xl w-full max-w-md shadow-[0_0_30px_rgba(239,68,68,0.3)] flex flex-col">
-        <div className="no-print p-6 border-b border-gray-800 flex justify-between items-center bg-red-950/30 rounded-t-2xl">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+      <div className="receipt-print bg-gaming-card border border-red-500 rounded-2xl w-full max-w-md shadow-[0_0_30px_rgba(239,68,68,0.3)] flex flex-col max-h-[90vh] sm:max-h-auto overflow-hidden">
+        <div className="no-print p-4 sm:p-6 border-b border-gray-800 flex justify-between items-center bg-red-950/30 rounded-t-2xl">
+          <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
             <Receipt className="text-red-400" /> Checkout Invoice
           </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-white"><X /></button>
+          <button onClick={onClose} className="text-gray-400 hover:text-white p-1"><X className="w-5 h-5 sm:w-6 sm:h-6" /></button>
         </div>
         
         {/* Print Header */}
@@ -167,10 +167,10 @@ const CheckoutModal = ({ isOpen, onClose, session, device, onConfirm }) => {
           <p className="text-sm">{new Date().toLocaleString()}</p>
         </div>
         
-        <div className="p-6 space-y-6 text-gray-300">
+        <div className="p-4 sm:p-6 space-y-6 text-gray-300 overflow-y-auto flex-grow">
           <div>
-            <h3 className="text-lg font-bold text-white border-b border-gray-800 pb-2 mb-2 receipt-print:text-black receipt-print:border-black">Play Time</h3>
-            <div className="space-y-2 receipt-print:text-black">
+            <h3 className="text-base sm:text-lg font-bold text-white border-b border-gray-800 pb-2 mb-2 receipt-print:text-black receipt-print:border-black">Play Time</h3>
+            <div className="space-y-2 receipt-print:text-black text-sm sm:text-base">
               {historyDisplay.map((h, idx) => (
                 <div key={idx} className="flex justify-between">
                   <span>{device.name} ({h.type}) - {h.timeStr}</span>
@@ -182,8 +182,8 @@ const CheckoutModal = ({ isOpen, onClose, session, device, onConfirm }) => {
 
           {session.orders && session.orders.length > 0 && (
             <div>
-              <h3 className="text-lg font-bold text-white border-b border-gray-800 pb-2 mb-2 receipt-print:text-black receipt-print:border-black">Orders</h3>
-              <div className="space-y-2 receipt-print:text-black">
+              <h3 className="text-base sm:text-lg font-bold text-white border-b border-gray-800 pb-2 mb-2 receipt-print:text-black receipt-print:border-black">Orders</h3>
+              <div className="space-y-2 receipt-print:text-black text-sm sm:text-base">
                 {session.orders.map((o, idx) => (
                   <div key={idx} className="flex justify-between">
                     <span>{o.quantity}x {o.name}</span>
@@ -194,22 +194,22 @@ const CheckoutModal = ({ isOpen, onClose, session, device, onConfirm }) => {
             </div>
           )}
 
-          <div className="border-t border-gray-800 pt-4 flex justify-between items-center text-xl font-bold text-white receipt-print:text-black receipt-print:border-black">
+          <div className="border-t border-gray-800 pt-4 flex justify-between items-center text-lg sm:text-xl font-bold text-white receipt-print:text-black receipt-print:border-black">
             <span>Grand Total:</span>
             <span className="text-red-400 receipt-print:text-black">${totalCost.toFixed(2)}</span>
           </div>
         </div>
 
-        <div className="no-print p-6 bg-black/20 rounded-b-2xl flex gap-3">
+        <div className="no-print p-4 sm:p-6 bg-black/20 rounded-b-2xl flex flex-col sm:flex-row gap-3">
           <button
             onClick={handlePrint}
-            className="w-1/3 py-3 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+            className="w-full sm:w-1/3 py-3 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2 text-sm sm:text-base"
           >
             Print
           </button>
           <button
             onClick={onConfirm}
-            className="w-2/3 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2"
+            className="w-full sm:w-2/3 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl shadow-lg transition-colors flex justify-center items-center gap-2 text-sm sm:text-base"
           >
             Confirm & End
           </button>
@@ -425,10 +425,10 @@ const DeviceCard = ({ device, isAdmin, activeSession, products, onStart, onStop,
 
         <div className="p-4 border-t border-gray-800/50 bg-black/20">
           {isActive ? (
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <button
                 onClick={() => setIsOrderModalOpen(true)}
-                className="w-14 bg-gaming-neon hover:bg-violet-600 text-white rounded-lg flex justify-center items-center transition-colors shadow-[0_0_10px_rgba(139,92,246,0.3)]"
+                className="w-full sm:w-14 h-12 sm:h-auto bg-gaming-neon hover:bg-violet-600 text-white rounded-lg flex justify-center items-center transition-colors shadow-[0_0_10px_rgba(139,92,246,0.3)]"
               >
                 <Plus className="w-6 h-6" />
               </button>

@@ -36,9 +36,9 @@ const StaffDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gaming-darker p-8">
+    <div className="min-h-screen bg-gaming-darker p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
-        <header className="flex justify-between items-center mb-8 bg-gaming-card p-6 rounded-2xl border border-gray-800 shadow-lg">
+        <header className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6 md:mb-8 bg-gaming-card p-4 md:p-6 rounded-2xl border border-gray-800 shadow-lg">
           <div className="flex items-center gap-4">
             <div className="bg-gaming-dark p-3 rounded-xl border border-gaming-neon/30">
               <MonitorPlay className="text-gaming-neon w-8 h-8" />
@@ -48,7 +48,7 @@ const StaffDashboard = () => {
               <p className="text-gray-400 text-sm">Welcome, {user?.name}</p>
             </div>
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-2 md:gap-4 items-center w-full md:w-auto justify-end">
             <NotificationCenter />
             <button 
               onClick={handleLogout}
@@ -60,8 +60,8 @@ const StaffDashboard = () => {
           </div>
         </header>
 
-        <div className="flex flex-wrap gap-4 mb-8 border-b border-gray-800 pb-4 justify-between items-center">
-          <div className="flex flex-wrap gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 mb-6 md:mb-8 border-b border-gray-800 pb-4 justify-between items-start sm:items-center">
+          <div className="flex flex-wrap gap-2 md:gap-4 w-full sm:w-auto">
             <button
               onClick={() => setActiveTab('devices')}
               className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
@@ -86,7 +86,7 @@ const StaffDashboard = () => {
 
           <button
             onClick={() => setIsPosModalOpen(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-lg shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-colors"
+            className="flex items-center justify-center w-full sm:w-auto gap-2 px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-lg shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-colors"
           >
             <ShoppingCart className="w-5 h-5" /> Direct POS
           </button>

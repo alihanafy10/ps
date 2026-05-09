@@ -45,13 +45,13 @@ const SuperAdminDashboard = () => {
   if (isLoading) return <div className="min-h-screen bg-gaming-darker text-white p-10">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-black text-white p-8">
+    <div className="min-h-screen bg-black text-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
-        <header className="flex justify-between items-center mb-8 border-b border-gray-800 pb-4">
-          <h1 className="text-3xl font-black flex items-center gap-3 text-red-500">
-            <ShieldAlert className="w-8 h-8" /> SUPER ADMIN
+        <header className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-6 md:mb-8 border-b border-gray-800 pb-4">
+          <h1 className="text-2xl md:text-3xl font-black flex items-center gap-2 md:gap-3 text-red-500">
+            <ShieldAlert className="w-6 h-6 md:w-8 md:h-8" /> SUPER ADMIN
           </h1>
-          <div className="flex gap-4">
+          <div className="flex gap-2 sm:gap-4 w-full sm:w-auto justify-end">
             <button 
               onClick={() => setIsProfileModalOpen(true)}
               className="flex items-center gap-2 px-4 py-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg transition-colors font-bold"
@@ -65,8 +65,8 @@ const SuperAdminDashboard = () => {
           </div>
         </header>
 
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
-          <table className="w-full text-left">
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl overflow-x-auto w-full">
+          <table className="w-full text-left min-w-[800px]">
             <thead className="bg-gray-950 border-b border-gray-800">
               <tr>
                 <th className="p-4 text-gray-400">Lounge Name</th>

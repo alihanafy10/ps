@@ -124,8 +124,9 @@ const ShiftAuditModal = ({ isOpen, onClose, shiftId }) => {
             {sessions.length === 0 ? (
               <p className="text-gray-500 italic">No gaming sessions recorded during this shift.</p>
             ) : (
-              <table className="w-full text-left border-collapse text-sm">
-                <thead>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-sm min-w-[600px]">
+                  <thead>
                   <tr className="bg-gray-100 border-b-2 border-gray-300">
                     <th className="p-2">Device</th>
                     <th className="p-2">Time (Start - End)</th>
@@ -165,6 +166,7 @@ const ShiftAuditModal = ({ isOpen, onClose, shiftId }) => {
                   })}
                 </tbody>
               </table>
+              </div>
             )}
           </div>
 
@@ -176,8 +178,9 @@ const ShiftAuditModal = ({ isOpen, onClose, shiftId }) => {
             {orders.length === 0 && sessions.every(s => s.orders.length === 0) ? (
               <p className="text-gray-500 italic">No cafe items sold during this shift.</p>
             ) : (
-              <table className="w-full text-left border-collapse text-sm">
-                <thead>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-sm min-w-[500px]">
+                  <thead>
                   <tr className="bg-gray-100 border-b-2 border-gray-300">
                     <th className="p-2">Source</th>
                     <th className="p-2">Items</th>
@@ -220,6 +223,7 @@ const ShiftAuditModal = ({ isOpen, onClose, shiftId }) => {
                   })}
                 </tbody>
               </table>
+              </div>
             )}
           </div>
 
@@ -259,11 +263,11 @@ const ShiftAuditModal = ({ isOpen, onClose, shiftId }) => {
       <div className="bg-gaming-card border border-gaming-neon rounded-2xl w-full max-w-5xl h-[90vh] flex flex-col shadow-[0_0_50px_rgba(139,92,246,0.3)]">
         
         {/* Header */}
-        <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-gaming-darker rounded-t-2xl">
-          <h2 className="text-2xl font-black text-white flex items-center gap-3">
+        <div className="p-4 sm:p-6 border-b border-gray-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gaming-darker rounded-t-2xl">
+          <h2 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2 sm:gap-3">
             <FileText className="text-cyan-400" /> Shift Audit Details
           </h2>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-end">
             <button 
               onClick={handlePrint}
               disabled={isLoading || !data}

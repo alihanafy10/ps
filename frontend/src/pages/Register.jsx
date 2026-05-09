@@ -56,7 +56,7 @@ const Register = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-gaming-card rounded-2xl shadow-2xl overflow-hidden border border-gray-800">
-        <div className="p-8">
+        <div className="p-6 sm:p-8">
           <div className="flex justify-center mb-6">
             <div className="bg-gaming-dark p-3 rounded-full border border-gaming-accent/30 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
               <Rocket className="w-10 h-10 text-gaming-accent" />

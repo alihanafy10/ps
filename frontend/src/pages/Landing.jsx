@@ -8,10 +8,10 @@ const StatusModal = ({ isOpen, onClose, data, isLoading }) => {
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="bg-gaming-card border border-gaming-accent rounded-2xl w-full max-w-2xl shadow-[0_0_40px_rgba(6,182,212,0.2)] flex flex-col max-h-[80vh]">
-        <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-black/20 rounded-t-2xl">
+      <div className="bg-gaming-card border border-gaming-accent rounded-2xl w-full max-w-2xl shadow-[0_0_40px_rgba(6,182,212,0.2)] flex flex-col max-h-[90vh] sm:max-h-[80vh]">
+        <div className="p-4 sm:p-6 border-b border-gray-800 flex justify-between items-center bg-black/20 rounded-t-2xl">
           <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
               <Monitor className="text-gaming-accent" /> {data?.loungeName || 'Lounge Status'}
             </h2>
             {data?.area && (
@@ -20,12 +20,12 @@ const StatusModal = ({ isOpen, onClose, data, isLoading }) => {
               </p>
             )}
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-white p-2 bg-gray-800/50 rounded-full transition-colors"><X /></button>
+          <button onClick={onClose} className="text-gray-400 hover:text-white p-2 bg-gray-800/50 rounded-full transition-colors"><X className="w-5 h-5 sm:w-6 sm:h-6" /></button>
         </div>
         
-        <div className="p-6 overflow-y-auto flex-grow">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-grow">
           {isLoading ? (
-            <div className="flex justify-center p-12">
+            <div className="flex justify-center p-8 sm:p-12">
               <Loader2 className="w-12 h-12 animate-spin text-gaming-accent" />
             </div>
           ) : data?.devices?.length === 0 ? (
@@ -110,47 +110,49 @@ const Landing = () => {
   return (
     <div className="min-h-screen bg-gaming-darker font-sans text-white">
       {/* Header */}
-      <header className="p-6 flex justify-between items-center max-w-6xl mx-auto border-b border-gray-800">
+      <header className="p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between items-center max-w-6xl mx-auto border-b border-gray-800">
         <div className="flex items-center gap-2">
-          <Monitor className="w-8 h-8 text-gaming-neon" />
-          <h1 className="text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-gaming-neon to-cyan-400">
+          <Monitor className="w-6 h-6 sm:w-8 sm:h-8 text-gaming-neon" />
+          <h1 className="text-xl sm:text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-gaming-neon to-cyan-400">
             PS-SaaS
           </h1>
         </div>
-        <div className="flex gap-4">
-          <button onClick={() => navigate('/login')} className="px-4 py-2 text-gray-300 hover:text-white font-bold transition-colors">
+        <div className="flex gap-2 sm:gap-4 w-full sm:w-auto justify-center">
+          <button onClick={() => navigate('/login')} className="px-3 sm:px-4 py-2 text-gray-300 hover:text-white font-bold transition-colors text-sm sm:text-base">
             Log In
           </button>
-          <button onClick={() => navigate('/register')} className="px-4 py-2 bg-gaming-accent hover:bg-cyan-500 text-white font-bold rounded-lg shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-colors">
+          <button onClick={() => navigate('/register')} className="px-3 sm:px-4 py-2 bg-gaming-accent hover:bg-cyan-500 text-white font-bold rounded-lg shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-colors text-sm sm:text-base">
             Register Lounge
           </button>
         </div>
       </header>
 
       {/* Hero Section */}
-      <main className="max-w-4xl mx-auto mt-20 px-4 text-center">
-        <h2 className="text-5xl md:text-7xl font-black mb-6">
+      <main className="max-w-4xl mx-auto mt-10 sm:mt-20 px-4 text-center">
+        <h2 className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 sm:mb-6 leading-tight">
           Find Your Perfect <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-fuchsia-500">
             Gaming Lounge
           </span>
         </h2>
-        <p className="text-xl text-gray-400 mb-12">Search for top-rated PlayStation lounges in your area.</p>
+        <p className="text-lg sm:text-xl text-gray-400 mb-8 sm:mb-12">Search for top-rated PlayStation lounges in your area.</p>
 
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by Lounge Name or Area..."
-            className="w-full px-6 py-4 bg-gaming-card border-2 border-gray-800 rounded-2xl text-lg focus:outline-none focus:border-gaming-neon transition-colors shadow-2xl pl-14"
-          />
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6" />
+        <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto flex flex-col sm:block gap-3">
+          <div className="relative w-full">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by Lounge Name..."
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-gaming-card border-2 border-gray-800 rounded-2xl text-base sm:text-lg focus:outline-none focus:border-gaming-neon transition-colors shadow-2xl pl-12 sm:pl-14"
+            />
+            <Search className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 sm:w-6 sm:h-6" />
+          </div>
           <button 
             type="submit" 
             disabled={isLoading}
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-gaming-neon hover:bg-violet-600 px-6 py-2 rounded-xl font-bold transition-colors shadow-[0_0_15px_rgba(139,92,246,0.4)]"
+            className="sm:absolute sm:right-3 sm:top-1/2 sm:-translate-y-1/2 w-full sm:w-auto bg-gaming-neon hover:bg-violet-600 px-6 py-3 sm:py-2 rounded-xl font-bold transition-colors shadow-[0_0_15px_rgba(139,92,246,0.4)]"
           >
             {isLoading ? 'Searching...' : 'Search'}
           </button>
@@ -167,16 +169,16 @@ const Landing = () => {
             ) : (
               <div className="grid gap-4">
                 {results.map((lounge) => (
-                  <div key={lounge._id} className="bg-gaming-card p-6 rounded-2xl border border-gray-800 hover:border-gaming-accent transition-colors flex justify-between items-center group">
+                  <div key={lounge._id} className="bg-gaming-card p-4 sm:p-6 rounded-2xl border border-gray-800 hover:border-gaming-accent transition-colors flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group">
                     <div>
-                      <h4 className="text-2xl font-bold text-white mb-2">{lounge.name}</h4>
-                      <p className="text-gray-400 flex items-center gap-1 text-sm">
-                        <MapPin className="w-4 h-4" /> {lounge.area}
+                      <h4 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">{lounge.name}</h4>
+                      <p className="text-gray-400 flex items-center gap-1 text-xs sm:text-sm">
+                        <MapPin className="w-3 h-3 sm:w-4 sm:h-4" /> {lounge.area}
                       </p>
                     </div>
                     <button 
                       onClick={() => handleViewStatus(lounge._id)}
-                      className="px-4 py-2 bg-gray-800 group-hover:bg-gaming-accent text-white font-bold rounded-lg transition-colors"
+                      className="w-full sm:w-auto px-4 py-2.5 sm:py-2 bg-gray-800 group-hover:bg-gaming-accent text-white font-bold rounded-lg transition-colors text-sm sm:text-base"
                     >
                       View Status
                     </button>
