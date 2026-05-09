@@ -16,16 +16,16 @@ const QRModal = ({ isOpen, onClose, deviceId, deviceName }) => {
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="bg-gaming-card border border-gaming-accent rounded-2xl w-full max-w-sm shadow-[0_0_30px_rgba(6,182,212,0.3)] flex flex-col p-8 text-center">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-white">Scan to Track</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-white"><X /></button>
+      <div className="bg-gaming-card border border-gaming-accent rounded-2xl w-full max-w-sm shadow-[0_0_30px_rgba(6,182,212,0.3)] flex flex-col p-6 text-center">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-bold text-white">Scan to Track</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-white p-1"><X className="w-5 h-5" /></button>
         </div>
-        <div className="bg-white p-4 rounded-xl inline-block mx-auto mb-4">
-          <QRCodeSVG value={trackingUrl} size={200} />
+        <div className="bg-white p-3 rounded-xl inline-flex items-center justify-center mx-auto mb-4 w-full aspect-square max-w-[200px]">
+          <QRCodeSVG value={trackingUrl} className="w-full h-full" />
         </div>
         <p className="text-gray-400 text-sm mb-2">{deviceName}</p>
-        <p className="text-cyan-400 text-xs break-all">{trackingUrl}</p>
+        <p className="text-cyan-400 text-[10px] sm:text-xs break-all">{trackingUrl}</p>
       </div>
     </div>
   );

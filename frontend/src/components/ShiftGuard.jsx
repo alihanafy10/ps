@@ -98,10 +98,10 @@ const ShiftGuard = ({ children }) => {
   return (
     <>
       <div className="bg-gaming-card border-b border-gray-800 shadow-md sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
           {activeShift ? (
             <>
-              <div className="flex gap-6">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 w-full md:w-auto items-center justify-center">
                 <div className="flex items-center gap-2 text-gray-300">
                   <Clock className="w-4 h-4 text-gaming-neon" />
                   <span className="text-sm font-medium">Started: {new Date(activeShift.startTime).toLocaleTimeString()}</span>
@@ -119,14 +119,14 @@ const ShiftGuard = ({ children }) => {
               </div>
               <button
                 onClick={() => setShowEndModal(true)}
-                className="flex items-center gap-2 px-6 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-bold rounded-lg shadow-[0_0_10px_rgba(239,68,68,0.4)] transition-colors"
+                className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-bold rounded-lg shadow-[0_0_10px_rgba(239,68,68,0.4)] transition-colors"
               >
                 <StopCircle className="w-4 h-4" /> Close Shift
               </button>
             </>
           ) : (
             <>
-              <div className="flex items-center gap-2 text-gray-400">
+              <div className="flex items-center gap-2 text-gray-400 w-full justify-center md:w-auto">
                 <StopCircle className="w-5 h-5" />
                 <span className="text-sm font-medium">No active shift</span>
               </div>
@@ -134,7 +134,7 @@ const ShiftGuard = ({ children }) => {
                 <button
                   onClick={handleStartShift}
                   disabled={isLoading}
-                  className="flex items-center gap-2 px-6 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-bold rounded-lg shadow-[0_0_15px_rgba(34,197,94,0.4)] transition-colors disabled:opacity-50"
+                  className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-bold rounded-lg shadow-[0_0_15px_rgba(34,197,94,0.4)] transition-colors disabled:opacity-50"
                 >
                   {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Clock className="w-4 h-4" />} Open Shift
                 </button>
