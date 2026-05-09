@@ -14,7 +14,8 @@ const server = http.createServer(app);
 // Setup Socket.io
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: ["https://ps-hub.duckdns.org", "http://localhost:5173"],
+    methods: ["GET", "POST"]
   },
 });
 
