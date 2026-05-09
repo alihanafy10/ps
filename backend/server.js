@@ -18,7 +18,8 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
     credentials: true
   },
-  path: "/socket.io/"
+  path: "/socket.io/",
+  allowEIO3: true
 });
 
 // Store io in app to use it in controllers
