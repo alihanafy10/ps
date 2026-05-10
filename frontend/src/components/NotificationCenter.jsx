@@ -21,9 +21,9 @@ const NotificationCenter = () => {
     fetchPendingOrders();
 
     // Socket Setup
-    socketRef.current = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'), {
+    socketRef.current = io("/", {
       path: "/socket.io/",
-      transports: ["polling"],
+      transports: ["websocket"],
       secure: true
     });
     
