@@ -58,6 +58,7 @@ const startSession = async (req, res) => {
     if (io) {
       console.log(`[SOCKET] Emitting sessionStarted to room: ${req.user.loungeId.toString()}`);
       io.to(req.user.loungeId.toString()).emit('sessionStarted', session);
+      io.emit('sessionStarted', session); // SLEDGEHAMMER TEST
     } else {
       console.log('[SOCKET] io object is undefined in startSession!');
     }
@@ -223,6 +224,10 @@ const stopSession = async (req, res) => {
     const io = getIo(req);
     if (io) {
       io.to(req.user.loungeId.toString()).emit('sessionStopped', session);
+      io.to(req.user.loungeId.toString()).emit('deviceAvailable', session.deviceId._id);
+      
+      io.emit('sessionStopped', session); // SLEDGEHAMMER TEST
+      io.emit('deviceAvailable', session.deviceId._id);
     }
 
     res.status(200).json(session);
@@ -274,6 +279,7 @@ const switchSessionMode = async (req, res) => {
     const io = getIo(req);
     if (io) {
       io.to(req.user.loungeId.toString()).emit('sessionUpdated', session);
+      io.emit('sessionUpdated', session); // SLEDGEHAMMER TEST
     }
 
     res.status(200).json(session);
