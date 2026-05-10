@@ -33,9 +33,13 @@ const ClientTracking = () => {
             secure: true,
             upgrade: false
           });
-          socket.on('connect', () => {
+          const handleConnect = () => {
             socket.emit('joinLounge', res.data.loungeId);
-          });
+          };
+          socket.on('connect', handleConnect);
+          if (socket.connected) {
+            handleConnect();
+          }
 
           // Listen for updates on THIS session
           socket.on('sessionUpdated', (updatedSession) => {

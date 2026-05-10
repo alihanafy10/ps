@@ -542,9 +542,13 @@ const DeviceList = ({ isAdmin }) => {
       upgrade: false
     });
     
-    socket.on('connect', () => {
+    const handleConnect = () => {
       socket.emit('joinLounge', user.loungeId);
-    });
+    };
+    socket.on('connect', handleConnect);
+    if (socket.connected) {
+      handleConnect();
+    }
 
     socket.on('sessionStarted', (session) => {
       setActiveSessions((prev) => [...prev, session]);

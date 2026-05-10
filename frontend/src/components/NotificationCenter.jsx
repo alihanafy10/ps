@@ -28,8 +28,14 @@ const NotificationCenter = () => {
       upgrade: false
     });
     
-    if (user?.loungeId) {
-      socketRef.current.emit('joinLounge', user.loungeId);
+    const handleConnect = () => {
+      if (user?.loungeId) {
+        socketRef.current.emit('joinLounge', user.loungeId);
+      }
+    };
+    socketRef.current.on('connect', handleConnect);
+    if (socketRef.current.connected) {
+      handleConnect();
     }
 
     socketRef.current.on('newOrderNotification', (order) => {

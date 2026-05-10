@@ -49,9 +49,13 @@ const ShiftGuard = ({ children }) => {
         secure: true,
         upgrade: false
       });
-      socket.on('connect', () => {
+      const handleConnect = () => {
         socket.emit('joinLounge', user.loungeId);
-      });
+      };
+      socket.on('connect', handleConnect);
+      if (socket.connected) {
+        handleConnect();
+      }
 
       socket.on('sessionStopped', fetchActiveShift);
       socket.on('orderCreated', fetchActiveShift);
