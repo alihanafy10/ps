@@ -544,16 +544,31 @@ const DeviceList = ({ isAdmin }) => {
     const handleConnect = () => {
       socket.emit('joinLounge', user.loungeId);
     };
-    socket.on('connect', handleConnect);
+    socket.on('connect', () => {
+      console.log('🔥 [DEBUG] SOCKET CONNECTED! ID:', socket.id);
+      handleConnect();
+    });
+    
+    socket.on('connect_error', (err) => {
+      console.error('🔥 [DEBUG] SOCKET CONNECTION ERROR:', err.message);
+    });
+
+    socket.on('disconnect', (reason) => {
+      console.warn('🔥 [DEBUG] SOCKET DISCONNECTED. Reason:', reason);
+    });
+
     if (socket.connected) {
+      console.log('🔥 [DEBUG] SOCKET WAS ALREADY CONNECTED!');
       handleConnect();
     }
 
     socket.on('sessionStarted', (session) => {
+      console.log('🔥 [DEBUG] RECEIVED sessionStarted EVENT!', session);
       setActiveSessions((prev) => [...prev, session]);
     });
 
     socket.on('sessionUpdated', (session) => {
+      console.log('🔥 [DEBUG] RECEIVED sessionUpdated EVENT!', session);
       setActiveSessions((prev) => prev.map(s => s._id === session._id ? session : s));
     });
 
