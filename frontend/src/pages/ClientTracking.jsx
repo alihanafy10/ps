@@ -12,11 +12,7 @@ const ClientTracking = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const { timeString, isTimeUp } = useTimer(
-    data?.session?.startTime,
-    data?.session?.isLimit,
-    data?.session?.limitMinutes
-  );
+  const { timeString, isTimeUp } = useTimer(data?.session);
 
   useEffect(() => {
     const fetchSessionData = async () => {

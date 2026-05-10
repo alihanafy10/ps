@@ -373,6 +373,8 @@ const getPublicSessionByDevice = async (req, res) => {
         _id: session._id,
         startTime: session.startTime,
         type: session.type,
+        status: session.status,
+        modeHistory: session.modeHistory,
         isLimit: session.isLimit,
         limitMinutes: session.limitMinutes,
         orders: session.orders,
