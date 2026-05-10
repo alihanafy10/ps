@@ -590,6 +590,15 @@ const DeviceList = ({ isAdmin }) => {
     };
   }, [user]);
 
+  const fetchActiveSessions = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/sessions/active`, { headers: { Authorization: `Bearer ${user.token}` } });
+      setActiveSessions(res.data);
+    } catch (error) {
+      console.error('Failed to fetch active sessions fallback', error);
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -647,6 +656,7 @@ const DeviceList = ({ isAdmin }) => {
         { deviceId, type, isLimit, limitMinutes },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
+      await fetchActiveSessions();
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to start session');
     }
@@ -659,6 +669,7 @@ const DeviceList = ({ isAdmin }) => {
         { sessionId },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
+      await fetchActiveSessions();
       toast.success('Converted to Open Time');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to convert session');
@@ -672,6 +683,7 @@ const DeviceList = ({ isAdmin }) => {
         {},
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
+      await fetchActiveSessions();
       toast.success('Mode switched!');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to switch mode');
@@ -685,6 +697,7 @@ const DeviceList = ({ isAdmin }) => {
         { sessionId, productId, quantity },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
+      await fetchActiveSessions();
       toast.success('Added to order!');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to add order');
@@ -698,6 +711,7 @@ const DeviceList = ({ isAdmin }) => {
         { deviceId },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
+      await fetchActiveSessions();
       // Update local product stock since checkout deducts it
       const productsRes = await axios.get(`${import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_URL || 'http://localhost:5000')}/api/products`, { headers: { Authorization: `Bearer ${user.token}` } });
       setProducts(productsRes.data);
@@ -713,6 +727,7 @@ const DeviceList = ({ isAdmin }) => {
         { sessionId },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
+      await fetchActiveSessions();
       toast.success('Session paused');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to pause session');
@@ -726,6 +741,7 @@ const DeviceList = ({ isAdmin }) => {
         { sessionId },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
+      await fetchActiveSessions();
       toast.success('Session resumed');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to resume session');
