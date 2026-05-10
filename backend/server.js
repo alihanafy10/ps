@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
   // Clients must emit a 'joinLounge' event with their loungeId after connecting
   socket.on('joinLounge', (loungeId) => {
     socket.join(loungeId);
-    console.log(`Socket ${socket.id} joined lounge ${loungeId}`);
+    console.log(`[SOCKET] Client ${socket.id} explicitly joined lounge room: ${loungeId}`);
   });
 
   socket.on('disconnect', () => {

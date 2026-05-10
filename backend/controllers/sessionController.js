@@ -56,7 +56,10 @@ const startSession = async (req, res) => {
 
     const io = getIo(req);
     if (io) {
+      console.log(`[SOCKET] Emitting sessionStarted to room: ${req.user.loungeId.toString()}`);
       io.to(req.user.loungeId.toString()).emit('sessionStarted', session);
+    } else {
+      console.log('[SOCKET] io object is undefined in startSession!');
     }
 
     res.status(201).json(session);
