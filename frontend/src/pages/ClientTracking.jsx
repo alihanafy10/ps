@@ -29,9 +29,8 @@ const ClientTracking = () => {
         if (res.data.active) {
           const socket = io((import.meta.env.VITE_API_URL || 'http://localhost:5000'), {
             path: "/socket.io/",
-            transports: ["websocket"],
-            secure: true,
-            upgrade: false
+            transports: ["polling"],
+            secure: true
           });
           const handleConnect = () => {
             socket.emit('joinLounge', res.data.loungeId);
