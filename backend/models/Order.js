@@ -9,7 +9,7 @@ const orderSchema = new mongoose.Schema(
     },
     shiftId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: 'Shift',
     },
     staffId: {
