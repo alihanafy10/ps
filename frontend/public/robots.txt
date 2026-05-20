@@ -1,0 +1,15 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /register
+
+# Disallow private dashboards, client device interfaces, ordering portals, and secret routes
+Disallow: /admin/
+Disallow: /staff/
+Disallow: /super-secret-admin/
+Disallow: /client/
+Disallow: /order/
+
+# Sitemap location
+Sitemap: https://ps-hub.duckdns.org/sitemap.xml
